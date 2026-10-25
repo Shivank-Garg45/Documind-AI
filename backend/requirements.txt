@@ -1,0 +1,28 @@
+# ---- DocuMind AI backend runtime dependencies ----
+# Pinned to versions verified to provide Python 3.14 (cp314) wheels.
+
+# Web framework & server
+fastapi==0.162.0
+uvicorn[standard]==0.54.0
+python-multipart==0.0.32
+
+# Validation & configuration
+pydantic==2.14.1
+pydantic-settings==2.16.1
+python-dotenv==1.2.4
+
+# PDF parsing
+pypdf==6.21.2
+
+# Vector store
+chromadb==1.5.9
+numpy==2.5.4
+
+# LLM providers (Gemini is the default; OpenAI optional)
+google-genai==2.33.0
+openai==3.37.0
+
+# Embeddings (real semantic backend).
+# Heavy: pulls torch. For a lightweight offline run set EMBEDDING_BACKEND=hash,
+# which needs none of this. See README "Embeddings backends".
+sentence-transformers==6.2.0
