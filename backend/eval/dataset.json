@@ -1,0 +1,60 @@
+{
+  "description": "Small reproducible retrieval-evaluation corpus for DocuMind AI. The corpus is inline so the eval needs no external files, model download, or API key.",
+  "corpus": {
+    "filename": "acme_handbook.pdf",
+    "pages": [
+      {
+        "page": 1,
+        "text": "ACME Corp Employee Handbook. Welcome to ACME. This handbook describes company policies, benefits, and workplace expectations. ACME was founded in 2011 and is headquartered in Denver, Colorado."
+      },
+      {
+        "page": 2,
+        "text": "Paid Time Off. Full-time employees accrue 20 days of paid vacation per year. Vacation requests must be submitted at least two weeks in advance through the HR portal. Unused vacation days roll over up to a maximum of 10 days."
+      },
+      {
+        "page": 3,
+        "text": "Remote Work Policy. Employees may work remotely up to three days per week. A stable internet connection is required. Core collaboration hours are 10am to 3pm Mountain Time, during which employees must be reachable."
+      },
+      {
+        "page": 4,
+        "text": "Health Benefits. ACME provides medical, dental, and vision insurance. The company covers 80 percent of the premium for employees and 50 percent for dependents. Open enrollment occurs each November."
+      },
+      {
+        "page": 5,
+        "text": "Expense Reimbursement. Business expenses must be submitted within 30 days with an itemized receipt. Meals during travel are reimbursed up to 60 dollars per day. Reimbursements are processed on the next payroll cycle."
+      }
+    ]
+  },
+  "questions": [
+    {
+      "q": "How many vacation days do full-time employees get?",
+      "expected_page": 2,
+      "expect_keywords": ["20 days", "vacation"],
+      "answerable": true
+    },
+    {
+      "q": "How many days per week can I work remotely?",
+      "expected_page": 3,
+      "expect_keywords": ["three days", "remotely"],
+      "answerable": true
+    },
+    {
+      "q": "What percentage of health insurance premiums does the company cover?",
+      "expected_page": 4,
+      "expect_keywords": ["80 percent", "premium"],
+      "answerable": true
+    },
+    {
+      "q": "What is the daily meal reimbursement limit during travel?",
+      "expected_page": 5,
+      "expect_keywords": ["60 dollars", "meals"],
+      "answerable": true
+    },
+    {
+      "q": "What is ACME's policy on pet insurance for goldfish?",
+      "expected_page": null,
+      "expect_keywords": [],
+      "answerable": false
+    }
+  ]
+}
