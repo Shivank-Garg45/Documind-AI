@@ -80,15 +80,15 @@ flowchart LR
     end
 
     DB[("ChromaDB\nvector store")]
-    OpenAI[("OpenAI API")]
+    LLMAPI[("LLM API\n(Gemini / OpenAI)")]
 
     UI -->|HTTP /api| API
     R1 --> P --> C --> E --> V --> DB
     R2 --> V
     R3 --> V
     V -->|retrieved passages| L
-    L -->|prompt + evidence| OpenAI
-    OpenAI -->|grounded answer| L --> R3 --> UI
+    L -->|prompt + evidence| LLMAPI
+    LLMAPI -->|grounded answer| L --> R3 --> UI
 ```
 
 ### Ingestion vs. query
@@ -99,7 +99,7 @@ sequenceDiagram
     participant F as Frontend
     participant A as FastAPI
     participant VS as VectorStore (Chroma)
-    participant LLM as OpenAI
+    participant LLM as Gemini / OpenAI
 
     Note over U,VS: Ingestion
     U->>F: Upload PDF
@@ -223,7 +223,7 @@ pip install -r requirements.txt
 
 # 4. Configure environment
 cp ../.env.example .env
-#   Edit .env and set OPENAI_API_KEY to enable answer generation.
+#   Edit .env and set GOOGLE_API_KEY (free Gemini) to enable answer generation.
 #   Retrieval and the test suite work WITHOUT a key.
 ```
 
@@ -242,7 +242,7 @@ See [`.env.example`](.env.example). The most important:
 |----------|---------|---------|
 | `LLM_PROVIDER` | `gemini` | `gemini` (free tier) or `openai`. |
 | `GOOGLE_API_KEY` | _(none)_ | Enables Gemini answers. Free key: <https://aistudio.google.com/apikey>. Without it, chat returns a transparent retrieval-only response. |
-| `GEMINI_MODEL` | `gemini-2.0-flash` | Gemini model. |
+| `GEMINI_MODEL` | `gemini-3.1-flash-lite` | Gemini model. |
 | `OPENAI_API_KEY` / `OPENAI_MODEL` | _(none)_ / `gpt-4o-mini` | Only used when `LLM_PROVIDER=openai`. |
 | `EMBEDDING_BACKEND` | `sentence_transformers` | `hash` for a lightweight offline run. |
 | `CHUNK_SIZE` / `CHUNK_OVERLAP` | `800` / `150` | Characters per chunk / overlap. |
@@ -291,7 +291,7 @@ curl -X POST http://localhost:8000/api/retrieve \
   -H "Content-Type: application/json" \
   -d '{"query": "What is the refund policy?", "top_k": 3}'
 
-# Ask a question (needs OPENAI_API_KEY for a synthesised answer)
+# Ask a question (needs GOOGLE_API_KEY / free Gemini for a synthesised answer)
 curl -X POST http://localhost:8000/api/chat \
   -H "Content-Type: application/json" \
   -d '{"query": "What is the refund policy?"}'
@@ -317,7 +317,7 @@ pytest --cov=app             # with coverage
 ```
 
 The suite uses the deterministic `hash` embedder and an in-memory ChromaDB, and
-**mocks the OpenAI call**, so it runs fast, offline, and needs no API key. It
+**mocks the LLM call**, so it runs fast, offline, and needs no API key. It
 covers PDF extraction, chunking + page metadata, empty/malformed PDF handling,
 request validation, upload/list/delete, retrieval relevance, document isolation,
 insufficient-evidence behavior, and chat error handling when the key is missing.
